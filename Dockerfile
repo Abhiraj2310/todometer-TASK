@@ -1,17 +1,21 @@
-FROM node:hydrogen-buster
+~
+~
+FROM node:latest
 
 WORKDIR /nodenew
 
 COPY . .
 
-RUN npm install && \
- npm run postinstall && \
- npm run pre-electron-pack && \
- npm run electron-pack
+RUN yum update -y && \
+    yum install -y jq
 
+COPY package*.jason ./
 
-
-CMD ["node", "package.json"]
+RUN npm install 
+RUN npm run postinstall 
+RUN npm run pre-electron-pack 
+RUN npm run electron-pack
 
 EXPOSE 3000
 
+CMD ["node","start","runserver","0.0.0.0:3000"]
